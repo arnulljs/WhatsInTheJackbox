@@ -8,6 +8,11 @@ Jackbox.tv-inspired picker: filter by **player count, packs owned, game type, fa
 
 66 games (Packs 1–11 + Naughty + Standalone). `localStorage` for owned packs, filters, and history. No accounts, no backend.
 
+<p align="center">
+  <img src="public/Preview1.png" alt="Home preview" width="45%">
+  <img src="public/Preview2.png" alt="Modal preview" width="45%">
+</p>
+
 ## Run
 
 ```bash
