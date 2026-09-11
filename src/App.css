@@ -35,11 +35,7 @@ a{color:inherit}
 }
 .brand{display:flex; align-items:center; gap:12px}
 .brand-logo{
-  height:48px; width:auto;
-  border:2px solid #000;
-  border-radius:4px;
-  box-shadow: 3px 3px 0 #000;
-  transform: rotate(-.5deg);
+  height:44px; width:auto;
 }
 .brand-sub{
   font-family:'Bebas Neue', sans-serif;
