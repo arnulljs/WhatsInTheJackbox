@@ -63,6 +63,19 @@ function extractYouTubeIds(html) {
   return [...ids];
 }
 
+function extractOgImage(html) {
+  // og:image is the most reliable source for the actual game tile art
+  const m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
+  if (m) {
+    let src = m[1];
+    if (src.startsWith('/')) src = BASE + src;
+    // skip ESRB/rating badges that some pages put as og:image (shouldn't happen but just in case)
+    if (/rating|esrb|pegi|badge/i.test(src)) return '';
+    return src;
+  }
+  return '';
+}
+
 function extractImages(html) {
   // prefer cms/jackbox image urls that look like game art, not icons
   const imgs = [];
@@ -72,6 +85,8 @@ function extractImages(html) {
     let src = m[1];
     if (src.startsWith('/')) src = BASE + src;
     // filter to likely game/pack art (contains jackbox, cms, or pack/game slug)
+    // exclude rating badges (ESRB, PEGI), platform icons, social icons, logos
+    if (/rating|esrb|pegi|badge|logo\.svg|\/icons\/|\/socials\//i.test(src)) continue;
     if (/jackbox|strapi|cms|cloudfront|amazonaws|\.jpg|\.png|\.webp/i.test(src)) imgs.push(src);
   }
   return [...new Set(imgs)];
@@ -150,8 +165,9 @@ async function scrapePack(pack) {
       const gImgs = extractImages(gHtml);
       // pick best: first youtube on game page is likely official trailer
       const trailer = gYts[0] || packTrailer || '';
-      // pick first large image that isn't favicon
-      const icon = gImgs.find(u => !u.includes('favicon') && !u.includes('apple-touch')) || imgs[0] || '';
+      // prefer og:image (actual game tile art) over <img> tags (often ESRB badges / logos)
+      const ogImg = extractOgImage(gHtml);
+      const icon = ogImg || gImgs.find(u => !u.includes('favicon') && !u.includes('apple-touch')) || imgs[0] || '';
       console.log(`    - ${title} -> yt:${trailer || '(none)'} icon:${icon ? icon.slice(0,60)+'...' : '(none)'}`);
 
       games.push({
@@ -220,7 +236,7 @@ async function scrapeUrl(url) {
     const yts = extractYouTubeIds(html);
     const imgs = extractImages(html);
     const trailer = yts[0] || '';
-    const icon = imgs.find(u => !u.includes('favicon')) || '';
+    const icon = extractOgImage(html) || imgs.find(u => !u.includes('favicon')) || '';
     console.log(`  -> ${title} yt:${trailer||'(none)'} icon:${icon?icon.slice(0,60)+'...':'(none)'}`);
     const slug = url.split('/').pop().split('?')[0];
     return [{ slug, title, pack: 'Standalone', packId: 'standalone', year: 2024, youtubeId: trailer, iconUrl: icon, url }];
@@ -268,10 +284,15 @@ async function main() {
 
   // Merge into existing games.json: update youtubeId + iconUrl where we found real data
   let updated = 0;
+  // aliases that don't match by title/slug alone (scraped name -> known id/title substrings)
+  const ALIASES = {
+    'ydkj classic': 'you don\'t know jack (classic)',
+  };
   for (const s of allScraped) {
     // try to match existing by title (case-insensitive) or slug
     const key = s.title.toLowerCase().trim();
-    let match = existing.find(g => g.title.toLowerCase().trim() === key);
+    const aliasKey = ALIASES[key] || key;
+    let match = existing.find(g => g.title.toLowerCase().trim() === aliasKey);
     if (!match) {
       // try slug match via id
       const slugId = s.slug.replace(/-/g, '');
@@ -279,7 +300,7 @@ async function main() {
     }
     if (!match) {
       // try contains
-      match = existing.find(g => key.includes(g.title.toLowerCase()) || g.title.toLowerCase().includes(key));
+      match = existing.find(g => aliasKey.includes(g.title.toLowerCase()) || g.title.toLowerCase().includes(aliasKey));
     }
     if (match) {
       if (s.youtubeId) { match.youtubeId = s.youtubeId; updated++; }
