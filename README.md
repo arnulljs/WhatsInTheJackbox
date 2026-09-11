@@ -4,6 +4,8 @@
 
 Jackbox.tv-inspired picker: filter by **player count, packs owned, game type, family-friendly, audience, duration, mature** → **slot-machine random** → grid browse → modal with **icon + trailer**.
 
+**Live:** [whatsinthejackbox.vercel.app](https://whatsinthejackbox.vercel.app)
+
 66 games (Packs 1–11 + Naughty + Standalone). `localStorage` for owned packs, filters, and history. No accounts, no backend.
 
 ## Run
@@ -16,7 +18,7 @@ npm run build   # → dist/
 
 ## Scrape real art / trailers
 
-Games without a YouTube trailer fallback to `dummyimage.com` placeholders and YouTube search embeds. To populate real icons and trailers from jackboxgames.com:
+Games without a YouTube trailer fall back to `dummyimage.com` placeholders. To populate real icons and trailers from jackboxgames.com:
 
 ```bash
 npm run scrape   # native fetch, zero deps, regex-based — no cheerio
