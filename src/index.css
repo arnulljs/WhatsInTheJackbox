@@ -1,0 +1,5 @@
+:root{ color-scheme: dark }
+*{ scrollbar-width: thin; scrollbar-color: #2a2a2a #0f0f0f}
+html{ scroll-behavior:smooth}
+body{ margin:0; background:#0f0f0f}
+#root{ min-height:100vh}
