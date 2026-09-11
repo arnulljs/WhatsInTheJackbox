@@ -322,7 +322,7 @@ function GameModal({game, onClose, onPickAnother, filteredCount}){
 
   const hasVideo = !!game.youtubeId
   const hasGif = !!game.gifUrl
-  const searchEmbed = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent('jackbox '+game.title+' trailer')}`
+  const fallbackImg = game.iconUrl || placeholderIcon(game.title, game.pack)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -344,15 +344,10 @@ function GameModal({game, onClose, onPickAnother, filteredCount}){
             <img src={game.gifUrl} alt={`${game.title} gameplay`} loading="lazy"
               onError={e=>{e.currentTarget.style.display='none'}} />
           ) : (
-            <iframe
-              width="100%"
-              height="100%"
-              src={searchEmbed}
-              title={`${game.title} search`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+            <div className="modal-placeholder">
+              <img src={fallbackImg} alt={`${game.title} icon`} />
+              <p>No trailer available</p>
+            </div>
           )}
         </div>
 
