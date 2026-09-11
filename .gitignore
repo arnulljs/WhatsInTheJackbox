@@ -47,3 +47,4 @@ serviceAccount*.json
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+.vercel
