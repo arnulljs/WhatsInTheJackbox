@@ -165,7 +165,7 @@ export default function App(){
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <div className="brand-mark">JACKBOX</div>
+          <img className="brand-logo" src="/whatsinthejackboxlogo.png" alt="What's In The Jackbox?" />
           <div className="brand-sub">WHAT'S IN THE JACKBOX?<span>• PICKER</span></div>
         </div>
         <div className="topbar-right">

@@ -1,3 +1,5 @@
+<p align="center"><img src="public/whatsinthejackboxlogo.png" alt="What's In The Jackbox?" width="200"></p>
+
 # What's In The Jackbox? — Picker
 
 Jackbox.tv-inspired picker: filter by **player count, packs owned, game type, family-friendly, audience, duration, mature** → **slot-machine random** → grid browse → modal with **icon + trailer**.

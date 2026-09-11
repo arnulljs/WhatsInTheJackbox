@@ -34,13 +34,10 @@ a{color:inherit}
   box-shadow: 0 4px 0 rgba(0,0,0,.25);
 }
 .brand{display:flex; align-items:center; gap:12px}
-.brand-mark{
-  font-family:'Bebas Neue', sans-serif;
-  font-size:24px; letter-spacing:.10em; line-height:1;
-  color:#fff; background:var(--accent);
+.brand-logo{
+  height:48px; width:auto;
   border:2px solid #000;
-  padding:6px 12px;
-  font-weight:400;
+  border-radius:4px;
   box-shadow: 3px 3px 0 #000;
   transform: rotate(-.5deg);
 }
