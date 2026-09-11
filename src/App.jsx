@@ -280,7 +280,7 @@ export default function App(){
 
 function GameCard({game, onSelect}){
   const color = PACK_COLOR[game.pack] || '#ffe600'
-  const thumb = game.youtubeId ? ytThumb(game.youtubeId) : game.iconUrl
+  const thumb = game.iconUrl || ytThumb(game.youtubeId)
   return (
     <button className="card" onClick={()=>onSelect(game)} style={{'--accent': color}}>
       <div className="card-media">
