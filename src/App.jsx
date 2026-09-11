@@ -149,7 +149,7 @@ export default function App(){
     if(!history.length) return null
     return gamesData.find(g=> g.title===history[0]) || null
   },[history])
-  const lastArt = lastGame ? (lastGame.youtubeId ? ytThumb(lastGame.youtubeId) : lastGame.iconUrl) : null
+  const lastArt = lastGame ? (lastGame.iconUrl || ytThumb(lastGame.youtubeId)) : null
 
   const toggleSet = (set, setter, val)=>{
     const n = new Set(set)
